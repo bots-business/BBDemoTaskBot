@@ -10,6 +10,20 @@
   group: 
 CMD*/
 
+ // put your admin telegram id here
+ // use /id command in bot to get your id
+const ADMIN_TG_ID = 519829299;
+
+// you can change Core rewards here
+const REWARD_FOR_START = 1;
+const REWARD_FOR_STARTING_BY_REF = 2;
+const REWARD_FOR_JOINING = 3;
+const REWARD_FOR_REFFERAL = 4;
+
+// prefix in refLink: https://t.me/BBTaskBot?start=[PREFIX]123456
+const REF_LINK_PREFIX = "r"; // used in /start command
+
+
 // define folders for skip
 // Because we need to install SmartBot first
 const SETUP_FOLDERS = [ "🛠️ Setup", "🔩 Core" ]
@@ -116,13 +130,6 @@ if(user&&!checkAccess()){
 //    core bot task as /start and main channel joining
 // you can setup core tasks here
 
-// you can change rewards here
-// if  - no reward and task is disabled
-const REWARD_FOR_START = 1;
-const REWARD_FOR_STARTING_BY_REF = 2;
-const REWARD_FOR_JOINING = 3;
-const REWARD_FOR_REFFERAL = 4;
-
 let CORE_TASKS = [];
 
 if(!SETUP_FOLDERS.includes(command?.folder)){
@@ -213,15 +220,6 @@ const smartTasker = new SmartTasker({
   smartBot: smartBot
 });
 
-// fill Scheme Lang.titles with params
-// TODO: seems this function is not used ?
-function getFilledTaskTitles(taskDef){
-  smartBot.params.title = taskDef.title;
-  smartBot.params.amount = taskDef.amount;
-
-  return smartBot.fill(smartBot.langData.titles);
-}
-
 function getUserBalance(){
   if(!user){ return }  // background task possible
   let balance = User.getProperty("balance") || 0;
@@ -301,18 +299,13 @@ function setUserWallet(wallet){
   return User.setProperty(userWalletPropName, wallet);
 }
 
-
-// prefix in refLink: https://t.me/BBTaskBot?start=[PREFIX]123456
-const REF_LINK_PREFIX = "r";
-
-
 function isAdmin(){
   // set your ADMIN ID here
   // you can know your ID via /id
-  const admin_id = 519829299;
+  const admin_id = ADMIN_TG_ID;
   if(!user){ return }  // background task possible
 
-  if(user.telegramid==admin_id){ return true }
+  if(user.telegramid==ADMIN_TG_ID){ return true }
 }
 
 // for get user telegram id via /id command
